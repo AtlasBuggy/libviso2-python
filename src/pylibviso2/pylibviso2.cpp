@@ -2,11 +2,15 @@
 #include <string>
 #include <vector>
 #include <stdint.h>
+#include <Python.h>
+#include <cstdio>
 
 #include <boost/python.hpp>
 
 #include "viso_mono.h"
+
 #include "viso_mono_wrapper.cpp"
+
 
 namespace py = boost::python;
 using namespace std;
@@ -58,6 +62,5 @@ BOOST_PYTHON_MODULE(pylibviso2)
         .def("getPose", &VisualOdometryMonoWrapper::getPose)
         .def("getNumberOfMatches", &VisualOdometryMonoWrapper::getNumberOfMatches)
         .def("getNumberOfInliers", &VisualOdometryMonoWrapper::getNumberOfInliers)
-
     ;
 }

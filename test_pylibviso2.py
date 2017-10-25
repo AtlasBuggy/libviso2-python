@@ -12,9 +12,9 @@ window_name = "visual odometry"
 cv2.namedWindow(window_name)
 
 param = mono_parameters()
-param.calib.f  = 645.24;
-param.calib.cu = 635.96;
-param.calib.cv = 194.13;
+param.calib.f  = 645.24
+param.calib.cu = 635.96
+param.calib.cv = 194.13
 
 v = VisualOdometryMono(param)
 

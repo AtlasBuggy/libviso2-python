@@ -1,9 +1,8 @@
-import cv2
-import asyncio
 
-from atlasbuggy.opencv import ImageMessage, OpenCVPipeline
+from atlasbuggy.opencv import OpenCVPipeline
 
 from .viso2 import Viso2Mono
+
 
 class Viso2MonoPipeline(OpenCVPipeline):
     def __init__(self, f, cu, cv, width=None, height=None, enabled=True, logger=None):

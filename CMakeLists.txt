@@ -13,9 +13,6 @@ include_directories("${LIBVISO2_SRC_DIR}")
 SET(CMAKE_CXX_FLAGS "-msse3")
 add_definitions(-msse3)
 
-# sources
-FILE(GLOB LIBVISO2_SRC_FILES "src/libviso2/*.cpp")
-
 # make release version
 set(CMAKE_BUILD_TYPE Release)
 
@@ -30,8 +27,6 @@ add_library(viso2
   src/libviso2/viso_mono.cpp
   src/libviso2/viso_stereo.cpp)
 
-# add_executable(viso2 ${LIBVISO2_SRC_FILES})
-
 find_package(PythonInterp 3 REQUIRED)
 find_package(PythonLibs 3 REQUIRED)
 
@@ -41,8 +36,10 @@ IF (Boost_FOUND)
     add_definitions( "-DHAS_BOOST" )
 ENDIF()
 
+find_package( OpenCV REQUIRED )
+
 include_directories(${CMAKE_BINARY_DIR}/include ${PYTHON_INCLUDE_DIRS})
-link_libraries(${Boost_LIBRARIES} ${PYTHON_LIBRARIES} viso2)
+link_libraries(${Boost_LIBRARIES} ${PYTHON_LIBRARIES} ${OpenCV_LIBS} viso2)
 link_directories("${Boost_LIBRARY_DIRS}")
 
 python_add_module(pylibviso2 src/pylibviso2/pylibviso2.cpp)
