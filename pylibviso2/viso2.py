@@ -2,6 +2,8 @@ import cv2
 import numpy as np
 
 from .pylibviso2 import *
+from .viso_kalman import VisoKalman
+from .stablize_video import Stablizer
 
 
 class Viso2Mono:
@@ -10,7 +12,10 @@ class Viso2Mono:
         param.calib.f = f
         param.calib.cu = cu
         param.calib.cv = cv
+        # param.motion_threshold = 120.0
         self.visual_odom_mono = VisualOdometryMono(param)
+        self.viso_kalman = VisoKalman()
+        self.stablizer = Stablizer()
 
         self.width = width
         self.height = height
@@ -26,6 +31,9 @@ class Viso2Mono:
 
     def update(self, image):
         image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        # image = cv2.medianBlur(image, 5)
+        # image = self.stablizer.process(image)
+
         if self.width is None or self.height is None:
             height, width = image.shape[0:2]
         else:
@@ -41,6 +49,8 @@ class Viso2Mono:
             self.y = self.pose[1, 3]
             self.z = self.pose[2, 3]
 
+            self.x, self.y, self.z = self.viso_kalman.process(self.x, self.y, self.z)
+
             # delta_x = self.x - self.prev_x
             # delta_y = self.y - self.prev_y
             # delta_z = self.z - self.prev_z
@@ -51,4 +61,4 @@ class Viso2Mono:
 
             print("%0.5f\t%0.5f\t%0.5f" % (self.x, self.y, self.z))
 
-        return status
+        return status, image
